@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/timeStampText"
+        android:layout_width="116dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Datum"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/timeStampInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/timeStampInput"
+        android:layout_width="198dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:hint="..."
+        android:inputType="none"
+        android:minHeight="48dp"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mileageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Tachostand"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/mileageInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/mileageInput"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="..."
+        android:inputType="number"
+        android:selectAllOnFocus="true"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeStampInput" />
+
+    <TextView
+        android:id="@+id/chargedKwPaidText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Menge"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/chargedKwPaidInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/chargedKwPaidHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="KWh"
+        app:layout_constraintBaseline_toBaselineOf="@+id/chargedKwPaidInput"
+        app:layout_constraintEnd_toStartOf="@+id/chargedKwPaidInput" />
+
+    <EditText
+        android:id="@+id/chargedKwPaidInput"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="..."
+        android:inputType="number"
+        android:selectAllOnFocus="true"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mileageInput" />
+
+    <TextView
+        android:id="@+id/priceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Preis"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/priceInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/priceHint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="EUR"
+        app:layout_constraintBaseline_toBaselineOf="@+id/priceInput"
+        app:layout_constraintEnd_toStartOf="@+id/priceInput" />
+
+    <EditText
+        android:id="@+id/priceInput"
+        android:layout_width="90dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="..."
+        android:inputType="numberDecimal"
+        android:textAlignment="viewEnd"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chargedKwPaidInput"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/socText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Laden bis"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/socInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/socHint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="%"
+        app:layout_constraintBaseline_toBaselineOf="@+id/socInput"
+        app:layout_constraintEnd_toStartOf="@+id/socInput" />
+
+    <EditText
+        android:id="@+id/socInput"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="..."
+        android:inputType="numberSigned"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceInput" />
+
+    <TextView
+        android:id="@+id/chargeTypText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="Ladesäule"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/socText" />
+
+
+    <Spinner
+        android:id="@+id/chargeTypeInput"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/socInput"
+        tools:ignore="SpeakableTextPresentCheck"/>
+
+    <TextView
+        android:id="@+id/bcConsumptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="BC Verbrauch"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/bcConsumptionInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <EditText
+        android:id="@+id/bcConsumptionInput"
+        android:layout_width="94dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="..."
+        android:inputType="numberDecimal"
+        android:textAlignment="viewEnd"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chargeTypeInput"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

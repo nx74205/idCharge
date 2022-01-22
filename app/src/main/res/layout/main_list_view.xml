@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_margin="2dp">
+
+        <TextView
+            android:id="@+id/timeStampView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Datum"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chargeTypeView"
+            app:layout_constraintStart_toEndOf="@+id/iconCalendarView" />
+
+        <TextView
+            android:id="@+id/mileageView"
+            android:layout_width="62dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="999.999"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chargedKwPaidView"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/chargedKwPaidView"
+            android:layout_width="43dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="99,99"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/priceView"
+            app:layout_constraintStart_toEndOf="@+id/mileageView" />
+
+        <TextView
+            android:id="@+id/priceView"
+            android:layout_width="43dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="99,00"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/bcConsumptionView"
+            app:layout_constraintStart_toEndOf="@+id/chargedKwPaidView" />
+
+        <ImageView
+            android:id="@+id/iconCalendarView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/date_icon" />
+
+        <ImageView
+            android:id="@+id/iconChargerView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iconCalendarView"
+            app:layout_constraintStart_toEndOf="@+id/timeStampView"
+            app:srcCompat="@drawable/charging_station_foreground" />
+
+        <TextView
+            android:id="@+id/chargeTypeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="ChargeType"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/iconChargerView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/iconChargerView"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KM-Stand"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/mileageView"
+            app:layout_constraintStart_toStartOf="@+id/mileageView"
+            app:layout_constraintTop_toBottomOf="@+id/mileageView" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kWh"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/chargedKwPaidView"
+            app:layout_constraintHorizontal_bias="0.434"
+            app:layout_constraintStart_toStartOf="@+id/chargedKwPaidView"
+            app:layout_constraintTop_toBottomOf="@+id/chargedKwPaidView" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="9dp"
+            android:layout_height="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="@+id/textView5"
+            app:srcCompat="@drawable/ic_action_name" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="€"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/priceView"
+            app:layout_constraintStart_toStartOf="@+id/priceView"
+            app:layout_constraintTop_toBottomOf="@+id/priceView" />
+
+        <TextView
+            android:id="@+id/bcConsumptionView"
+            android:layout_width="43dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="99,99"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/socView"
+            app:layout_constraintStart_toEndOf="@+id/priceView" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kWh "
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/bcConsumptionView"
+            app:layout_constraintStart_toStartOf="@+id/bcConsumptionView"
+            app:layout_constraintTop_toBottomOf="@+id/bcConsumptionView" />
+
+        <TextView
+            android:id="@+id/socView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="99"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/bcConsumptionView"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <TextView
+            android:id="@+id/socViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SOC %"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/socView"
+            app:layout_constraintStart_toStartOf="@+id/socView"
+            app:layout_constraintTop_toBottomOf="@+id/socView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
