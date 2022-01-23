@@ -11,6 +11,8 @@ public class LocalChargeData implements Serializable {
 
     private Long mileage;
 
+    private Long distance;
+
     private Double chargedKwPaid;
 
     private Double price;
@@ -108,5 +110,13 @@ public class LocalChargeData implements Serializable {
 
     public void setViewPosition(int viewPosition) {
         this.viewPosition = viewPosition;
+    }
+
+    public Long getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Long distance) {
+        this.distance = distance;
     }
 }

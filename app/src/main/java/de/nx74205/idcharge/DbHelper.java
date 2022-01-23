@@ -1,48 +1,59 @@
 package de.nx74205.idcharge;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
+import android.text.TextUtils;
+import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import de.nx74205.idcharge.model.LocalChargeData;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class DbHelper extends SQLiteOpenHelper {
 
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    private static final int DATABASE_VERSION = 2;
+    private final Context context;
 
     public DbHelper( Context context) {
-        super(context, "Chargedata", null, 1);
+        super(context, "Chargedata", null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create Table local_charges(" +
-                "charge_id INTEGER PRIMARY KEY, " +
-                "remote_charge_id INTEGER," +
-                "timestamp TEXT," +
-                "mileage INTEGER," +
-                "charge_kw_paid TEXT," +
-                "price TEXT," +
-                "target_soc INTEGER, " +
-                "charge_typ TEXT," +
-                "bc_consumption TEXT)");
+
+        readAndExecuteSQLScript(db, context, "createDb.sql");
+
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        //db.execSQL("drop Table if exists Userdetails");
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        Log.e(TAG, "Updating table from " + oldVersion + " to " + newVersion);
+
+        try {
+            for (int i = oldVersion; i < newVersion; ++i) {
+                String migrationName = String.format("from_%02d_to_%02d.sql", i, (i + 1));
+                Log.d(TAG, "Looking for migration file: " + migrationName);
+                readAndExecuteSQLScript(db, context, migrationName);
+            }
+        } catch (Exception exception) {
+            Log.e(TAG, "Exception running upgrade script:", exception);
+        }
     }
 
     public long insertCharges(LocalChargeData chargeData) {
@@ -108,6 +119,7 @@ public class DbHelper extends SQLiteOpenHelper {
             chargeRecord.setChargeId(cursor.getInt(cursor.getColumnIndex("charge_id")));
             chargeRecord.setTimeStamp(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("timestamp")), DATE_FORMAT));
             chargeRecord.setMileage(cursor.getLong(cursor.getColumnIndex("mileage")));
+            chargeRecord.setDistance(cursor.getLong(cursor.getColumnIndex("distance")));
             chargeRecord.setChargedKwPaid(Double.parseDouble(cursor.getString(cursor.getColumnIndex("charge_kw_paid"))));
             chargeRecord.setPrice(Double.parseDouble(cursor.getString(cursor.getColumnIndex("price"))));
             chargeRecord.setTargetSoc(cursor.getInt(cursor.getColumnIndex("target_soc")));
@@ -120,10 +132,54 @@ public class DbHelper extends SQLiteOpenHelper {
         return chargeDataList;
     }
 
+    private void readAndExecuteSQLScript(SQLiteDatabase db, Context ctx, String fileName) {
+
+        if (TextUtils.isEmpty(fileName)) {
+            Log.d(TAG, "SQL script file name is empty");
+            return;
+        }
+
+        Log.d(TAG, "Script found. Executing...");
+        AssetManager assetManager = ctx.getAssets();
+        BufferedReader reader = null;
+
+        try {
+            InputStream is = assetManager.open(fileName);
+            InputStreamReader isr = new InputStreamReader(is);
+            reader = new BufferedReader(isr);
+            executeSQLScript(db, reader);
+        } catch (IOException e) {
+            Log.e(TAG, "IOException:", e);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.e(TAG, "IOException:", e);
+                }
+            }
+        }
+
+    }
+
+    private void executeSQLScript(SQLiteDatabase db, BufferedReader reader) throws IOException {
+        String line;
+        StringBuilder statement = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            statement.append(line);
+            statement.append("\n");
+            if (line.endsWith(";")) {
+                db.execSQL(statement.toString());
+                statement = new StringBuilder();
+            }
+        }
+    }
+
     private ContentValues setContentValues(LocalChargeData chargeData) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("timestamp", chargeData.getTimeStamp().format(DATE_FORMAT));
         contentValues.put("mileage", chargeData.getMileage());
+        contentValues.put("distance", chargeData.getDistance());
         contentValues.put("charge_kw_paid", chargeData.getChargedKwPaid().toString());
         contentValues.put("price", chargeData.getPrice().toString());
         contentValues.put("target_soc", chargeData.getTargetSoc());

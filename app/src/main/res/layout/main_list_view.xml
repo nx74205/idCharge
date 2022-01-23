@@ -31,7 +31,7 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/chargedKwPaidView"
+            app:layout_constraintBaseline_toBaselineOf="@+id/distanceView"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/priceView"
-            app:layout_constraintStart_toEndOf="@+id/mileageView" />
+            app:layout_constraintStart_toEndOf="@+id/distanceView" />
 
         <TextView
             android:id="@+id/priceView"
@@ -98,7 +98,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="KM-Stand"
+            android:text="Km-Stand"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="@+id/mileageView"
             app:layout_constraintStart_toStartOf="@+id/mileageView"
@@ -158,10 +158,11 @@
 
         <TextView
             android:id="@+id/socView"
-            android:layout_width="wrap_content"
+            android:layout_width="43dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="99"
+            android:text="999 %"
+            android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/bcConsumptionView"
@@ -171,11 +172,33 @@
             android:id="@+id/socViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SOC %"
+            android:text="SOC"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="@+id/socView"
             app:layout_constraintStart_toStartOf="@+id/socView"
             app:layout_constraintTop_toBottomOf="@+id/socView" />
+
+        <TextView
+            android:id="@+id/distanceView"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="9999"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chargedKwPaidView"
+            app:layout_constraintStart_toEndOf="@+id/mileageView" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trip"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/distanceView"
+            app:layout_constraintStart_toStartOf="@+id/distanceView"
+            app:layout_constraintTop_toBottomOf="@+id/distanceView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,8 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.nx74205.idcharge.R;
 import de.nx74205.idcharge.model.LocalChargeData;
@@ -34,6 +36,7 @@ public class ChargeDataAdapter extends RecyclerView.Adapter<ChargeDataAdapter.Vi
 
         public TextView timeStampView;
         public TextView mileageView;
+        public TextView distanceView;
         public TextView chargedKwPaidView;
         public TextView priceView;
         public TextView chargeTypView;
@@ -45,6 +48,7 @@ public class ChargeDataAdapter extends RecyclerView.Adapter<ChargeDataAdapter.Vi
 
             timeStampView = itemView.findViewById(R.id.timeStampView);
             mileageView = itemView.findViewById(R.id.mileageView);
+            distanceView = itemView.findViewById(R.id.distanceView);
             chargedKwPaidView = itemView.findViewById(R.id.chargedKwPaidView);
             priceView = itemView.findViewById(R.id.priceView);
             chargeTypView = itemView.findViewById(R.id.chargeTypeView);
@@ -84,12 +88,16 @@ public class ChargeDataAdapter extends RecyclerView.Adapter<ChargeDataAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LocalChargeData currentItem = localChargeDataList.get(position);
 
+        DecimalFormat decimalFormat = new DecimalFormat("###,##0.00");
+        DecimalFormat noDigitsFormat = new DecimalFormat("###,###");
+
         holder.timeStampView.setText(currentItem.getTimeStamp().format(DATE_FORMAT));
-        holder.mileageView.setText(currentItem.getMileage().toString());
-        holder.chargedKwPaidView.setText(currentItem.getChargedKwPaid().toString());
-        holder.priceView.setText(currentItem.getPrice().toString());
+        holder.mileageView.setText(noDigitsFormat.format(currentItem.getMileage()));
+        holder.distanceView.setText(noDigitsFormat.format(currentItem.getDistance()));
+        holder.chargedKwPaidView.setText(decimalFormat.format(currentItem.getChargedKwPaid()));
+        holder.priceView.setText(decimalFormat.format(currentItem.getPrice()));
         holder.chargeTypView.setText(currentItem.getChargeTyp());
-        holder.bcConsumptionView.setText(currentItem.getBcConsumption().toString());
+        holder.bcConsumptionView.setText(decimalFormat.format(currentItem.getBcConsumption()));
         holder.socView.setText(currentItem.getTargetSoc().toString().concat(" %"));
 
     }

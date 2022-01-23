@@ -2,9 +2,10 @@
     <string name="app_name">IdCharge</string>
 
     <string-array name="ladetypen">
+        <item>Wallbox</item>
         <item>AC</item>
         <item>CCS 50 KW</item>
-        <item>CCS 100 KW</item>
+        <item>CCS 150 KW</item>
         <item>CCS HPC</item>
     </string-array>
 </resources>

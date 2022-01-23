@@ -41,7 +41,7 @@
 
     <EditText
         android:id="@+id/mileageInput"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -72,11 +72,29 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/chargedKwPaidInput"
         app:layout_constraintEnd_toStartOf="@+id/chargedKwPaidInput" />
 
+    <TextView
+        android:id="@+id/chargedKwPaidHint3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="KWh"
+        app:layout_constraintBaseline_toBaselineOf="@+id/bcConsumptionInput"
+        app:layout_constraintEnd_toStartOf="@+id/bcConsumptionInput" />
+
+    <TextView
+        android:id="@+id/chargedKwPaidHint2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Km"
+        app:layout_constraintBaseline_toBaselineOf="@+id/distanceInput"
+        app:layout_constraintEnd_toStartOf="@+id/distanceInput" />
+
     <EditText
         android:id="@+id/chargedKwPaidInput"
         android:layout_width="80dp"
         android:layout_height="48dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="..."
@@ -84,7 +102,7 @@
         android:selectAllOnFocus="true"
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mileageInput" />
+        app:layout_constraintTop_toBottomOf="@+id/distanceInput" />
 
     <TextView
         android:id="@+id/priceText"
@@ -107,15 +125,15 @@
 
     <EditText
         android:id="@+id/priceInput"
-        android:layout_width="90dp"
+        android:layout_width="80dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="..."
         android:inputType="numberDecimal"
-        android:textAlignment="viewEnd"
         android:selectAllOnFocus="true"
+        android:textAlignment="viewEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chargedKwPaidInput"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -143,14 +161,14 @@
         android:id="@+id/socInput"
         android:layout_width="50dp"
         android:layout_height="48dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="..."
         android:inputType="numberSigned"
         android:textAlignment="viewEnd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priceInput" />
+        app:layout_constraintTop_toBottomOf="@+id/bcConsumptionInput" />
 
     <TextView
         android:id="@+id/chargeTypText"
@@ -188,18 +206,41 @@
 
     <EditText
         android:id="@+id/bcConsumptionInput"
-        android:layout_width="94dp"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="..."
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceInput"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/distanceInput"
+        android:layout_width="80dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="..."
-        android:inputType="numberDecimal"
-        android:textAlignment="viewEnd"
+        android:inputType="number"
         android:selectAllOnFocus="true"
+        android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chargeTypeInput"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/mileageInput" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Wegstrecke"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/distanceInput"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

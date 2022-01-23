@@ -37,6 +37,7 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
 
     EditText timeStampInput;
     EditText mileageInput;
+    EditText distanceInput;
     EditText chargedKwPaidInput;
     EditText priceInput;
     EditText socInput;
@@ -44,6 +45,8 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
     EditText bcConsumptionInput;
 
     LocalChargeData data;
+    Long oldMileage;
+    Long oldDistance;
     String chargeTypInputSelected;
 
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
@@ -56,6 +59,8 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
 
         Intent intent = getIntent();
         data = (LocalChargeData)intent.getSerializableExtra("DATA");
+        oldMileage = data.getMileage();
+        oldDistance = (data.getDistance() == null) ? 0L : data.getDistance();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Eintrag bearbeiten");
@@ -66,14 +71,32 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
 
         timeStampInput = findViewById((R.id.timeStampInput));
         mileageInput = findViewById(R.id.mileageInput);
+        distanceInput = findViewById(R.id.distanceInput);
         chargedKwPaidInput = findViewById(R.id.chargedKwPaidInput);
         priceInput = findViewById(R.id.priceInput);
         socInput = findViewById(R.id.socInput);
         bcConsumptionInput = findViewById(R.id.bcConsumptionInput);
 
+        distanceInput.setFilters(new InputFilter[] {new InputFilterMinMax(1, 2000)});
+        distanceInput.setText(convertToDisplayNum(oldDistance, ""));
         socInput.setFilters(new InputFilter[] {new InputFilterMinMax("1", "100")});
-        mileageInput.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10000000)});
         priceInput.setFilters(new InputFilter[]{new InputFilterNoSign()});
+
+        mileageInput.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10000000)});
+        mileageInput.setText(convertToDisplayNum(data.getMileage(), ""));
+        mileageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+                if (!b) {
+                    Long currentMileage = Long.parseLong(convertToNum(mileageInput.getText(), "0"));
+                    if (currentMileage > oldMileage) {
+                        oldDistance += (currentMileage - oldMileage);
+                        distanceInput.setText(convertToDisplayNum(oldDistance, ""));
+                    }
+                }
+            }
+        });
 
         timeStampInput.setInputType(InputType.TYPE_NULL);
         timeStampInput.setFocusableInTouchMode(false);
@@ -85,7 +108,6 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
             }
         });
 
-        mileageInput.setText(convertToDisplayNum(data.getMileage(), ""));
         chargedKwPaidInput.setText(convertToDisplayNum(data.getChargedKwPaid(), ""));
         priceInput.setText(convertToDisplayNum(data.getPrice(), ""));
         socInput.setText(convertToDisplayNum(data.getTargetSoc(), ""));
@@ -105,8 +127,7 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
         Intent resultIntent = new Intent();
         switch (item.getItemId()) {
             case R.id.save_page:
-                resultIntent.putExtra("DATA", createRecord(timeStampInput, mileageInput,
-                        chargedKwPaidInput, priceInput, socInput, bcConsumptionInput));
+                resultIntent.putExtra("DATA", createRecord());
 
                 setResult(RESULT_OK, resultIntent);
                 finish();
@@ -198,11 +219,11 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
         }
     }
 
-    private LocalChargeData createRecord(EditText timeStampInput, EditText mileageInput, EditText chargedKwPaidInput,
-            EditText priceInput, EditText socInput, EditText bcConsumptionInput) {
+    private LocalChargeData createRecord() {
 
         data.setTimeStamp(LocalDateTime.parse(timeStampInput.getText().toString(), DATE_FORMAT));
         data.setMileage(Long.parseLong(convertToNum(mileageInput.getText(), "0")));
+        data.setDistance(Long.parseLong(convertToNum(distanceInput.getText(), "0")));
         data.setChargedKwPaid(Double.parseDouble(convertToNum(chargedKwPaidInput.getText(), "0")));
         data.setPrice(Double.parseDouble(convertToNum(priceInput.getText(), "0")));
         data.setTargetSoc(Integer.parseInt(convertToNum(socInput.getText(), "0")));
