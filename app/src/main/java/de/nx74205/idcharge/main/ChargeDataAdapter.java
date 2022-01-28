@@ -11,14 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import de.nx74205.idcharge.R;
 import de.nx74205.idcharge.model.LocalChargeData;
 
 public class ChargeDataAdapter extends RecyclerView.Adapter<ChargeDataAdapter.ViewHolder> {
 
-    private ArrayList<LocalChargeData> localChargeDataList;
+    private final ArrayList<LocalChargeData> localChargeDataList;
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     private OnItemClickListener listener;
 
@@ -56,14 +55,11 @@ public class ChargeDataAdapter extends RecyclerView.Adapter<ChargeDataAdapter.Vi
             socView = itemView.findViewById(R.id.socView);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClicked(position);
-                        }
+            itemView.setOnClickListener(view -> {
+                if (listener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClicked(position);
                     }
                 }
             });
@@ -79,9 +75,7 @@ public class ChargeDataAdapter extends RecyclerView.Adapter<ChargeDataAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_list_view, parent, false);
-        ViewHolder vh = new ViewHolder(v, listener);
-
-        return vh;
+        return new ViewHolder(v, listener);
     }
 
     @Override
@@ -95,10 +89,10 @@ public class ChargeDataAdapter extends RecyclerView.Adapter<ChargeDataAdapter.Vi
         holder.mileageView.setText(noDigitsFormat.format(currentItem.getMileage()));
         holder.distanceView.setText(noDigitsFormat.format(currentItem.getDistance()));
         holder.chargedKwPaidView.setText(decimalFormat.format(currentItem.getChargedKwPaid()));
-        holder.priceView.setText(decimalFormat.format(currentItem.getPrice()));
+        holder.priceView.setText(decimalFormat.format(currentItem.getPrice()).concat(" €"));
         holder.chargeTypView.setText(currentItem.getChargeTyp());
         holder.bcConsumptionView.setText(decimalFormat.format(currentItem.getBcConsumption()));
-        holder.socView.setText(currentItem.getTargetSoc().toString().concat(" %"));
+        holder.socView.setText(noDigitsFormat.format(currentItem.getTargetSoc()).concat(" %"));
 
     }
 
