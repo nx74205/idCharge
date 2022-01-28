@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         chargeDataAdapter = new ChargeDataAdapter(chargeDataList);
 
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(5));
+        recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(20));
         recyclerView.setAdapter(chargeDataAdapter);
 
         chargeDataAdapter.setOnItemClickListener(new ChargeDataAdapter.OnItemClickListener() {

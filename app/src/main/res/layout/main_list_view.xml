@@ -113,7 +113,8 @@
             app:layout_constraintEnd_toEndOf="@+id/chargedKwPaidView"
             app:layout_constraintHorizontal_bias="0.434"
             app:layout_constraintStart_toStartOf="@+id/chargedKwPaidView"
-            app:layout_constraintTop_toBottomOf="@+id/chargedKwPaidView" />
+            app:layout_constraintTop_toBottomOf="@+id/chargedKwPaidView"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/textView"
