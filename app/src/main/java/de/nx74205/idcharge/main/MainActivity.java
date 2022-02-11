@@ -28,9 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private final int CHANGE_CHARGE_DATA_ACTIVITY = 2;
     FloatingActionButton addChargeButton;
 
-    private RecyclerView recyclerView;
     private ChargeDataAdapter chargeDataAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     ArrayList<LocalChargeData> chargeDataList;
 
@@ -41,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = new DbHelper(this);
-
-        chargeDataList = db.getCharges();
 
         buildRecyclerView();
         addChargeButton = findViewById(R.id.add_charge);
@@ -74,14 +69,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void buildRecyclerView() {
-        recyclerView = findViewById(R.id.chargeItemsView);
+        RecyclerView recyclerView = findViewById(R.id.chargeItemsView);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        chargeDataAdapter = new ChargeDataAdapter(chargeDataList);
-
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(20));
+
+        db = new DbHelper(this);
+        chargeDataList = db.getCharges();
+        chargeDataAdapter = new ChargeDataAdapter(chargeDataList);
         recyclerView.setAdapter(chargeDataAdapter);
+
+        recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(20));
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -123,30 +121,28 @@ public class MainActivity extends AppCompatActivity {
         LocalChargeData chargeData = (LocalChargeData)data.getSerializableExtra("DATA");
         int position = chargeData.getViewPosition();
 
-        if (chargeData != null) {
-            switch (requestCode) {
-                case NEW_CHARGE_DATA_ACTIVITY:
-                    long chargeId = db.insertCharges(chargeData);
-                    if (chargeId != -1) {
-                        chargeData.setChargeId((int)chargeId);
-                        chargeDataList.add(position, chargeData);
-                        chargeDataAdapter.notifyItemInserted(position);
-                    };
-                    break;
-                case CHANGE_CHARGE_DATA_ACTIVITY:
-                    if (chargeData.getMileage().longValue() == -1L) {
-                        if (db.deleteCharges(chargeData)) {
-                            chargeDataList.remove(position);
-                            chargeDataAdapter.notifyItemRemoved(position);
-                        }
-                    } else {
-                            if (db.updateCharges(chargeData)) {
-                                chargeDataList.set(position, chargeData);
-                                chargeDataAdapter.notifyItemChanged(position);
-                            }
+        switch (requestCode) {
+            case NEW_CHARGE_DATA_ACTIVITY:
+                long chargeId = db.insertCharges(chargeData);
+                if (chargeId != -1) {
+                    chargeData.setChargeId((int)chargeId);
+                    chargeDataList.add(position, chargeData);
+                    chargeDataAdapter.notifyItemInserted(position);
+                };
+                break;
+            case CHANGE_CHARGE_DATA_ACTIVITY:
+                if (chargeData.getMileage() == -1L) {
+                    if (db.deleteCharges(chargeData)) {
+                        chargeDataList.remove(position);
+                        chargeDataAdapter.notifyItemRemoved(position);
                     }
-                    break;
-            }
+                } else {
+                        if (db.updateCharges(chargeData)) {
+                            chargeDataList.set(position, chargeData);
+                            chargeDataAdapter.notifyItemChanged(position);
+                        }
+                }
+                break;
         }
     }
 }
