@@ -3,6 +3,7 @@ create Table local_charges
  remote_charge_id INTEGER,
  timestamp        TEXT,
  mileage          INTEGER,
+ distance         INTEGER,
  charge_kw_paid   TEXT,
  price            TEXT,
  target_soc       INTEGER,

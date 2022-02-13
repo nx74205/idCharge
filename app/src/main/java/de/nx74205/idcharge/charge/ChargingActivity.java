@@ -1,5 +1,6 @@
 package de.nx74205.idcharge.charge;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -11,12 +12,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TimePicker;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +29,7 @@ import de.nx74205.idcharge.charge.helper.InputFilterMinMax;
 import de.nx74205.idcharge.charge.helper.InputFilterNoSign;
 import de.nx74205.idcharge.model.LocalChargeData;
 
-public class ChargingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ChargingActivity extends AppCompatActivity implements ChargeDataAssignDialog.OnInInputListener {
 
     EditText timeStampInput;
     EditText mileageInput;
@@ -41,16 +37,19 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
     EditText chargedKwPaidInput;
     EditText priceInput;
     EditText socInput;
+
+    TextView fragmentText;
+
+    CreateChargeTypeInputSpinner chargeTypeInputSpinner;
     Spinner chargeTypeInput;
     EditText bcConsumptionInput;
+    Button chargeAssignButton;
 
     LocalChargeData data;
     Long oldMileage;
     Long oldDistance;
-    String chargeTypInputSelected;
 
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,47 +65,22 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
         actionBar.setTitle("Eintrag bearbeiten");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
+        createTimeStampInput();
+        createMileageInput();
         createChargeTypeInputSpinner();
+        createChargeAssignButton();
 
-        timeStampInput = findViewById((R.id.timeStampInput));
-        mileageInput = findViewById(R.id.mileageInput);
         distanceInput = findViewById(R.id.distanceInput);
         chargedKwPaidInput = findViewById(R.id.chargedKwPaidInput);
         priceInput = findViewById(R.id.priceInput);
         socInput = findViewById(R.id.socInput);
         bcConsumptionInput = findViewById(R.id.bcConsumptionInput);
+        fragmentText = findViewById(R.id.fragmentText);
 
         distanceInput.setFilters(new InputFilter[] {new InputFilterMinMax(1, 2000)});
         distanceInput.setText(convertToDisplayNum(oldDistance, ""));
         socInput.setFilters(new InputFilter[] {new InputFilterMinMax("1", "100")});
         priceInput.setFilters(new InputFilter[]{new InputFilterNoSign()});
-
-        mileageInput.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10000000)});
-        mileageInput.setText(convertToDisplayNum(data.getMileage(), ""));
-        mileageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-
-                if (!b) {
-                    Long currentMileage = Long.parseLong(convertToNum(mileageInput.getText(), "0"));
-                    if (currentMileage > oldMileage) {
-                        oldDistance += (currentMileage - oldMileage);
-                        distanceInput.setText(convertToDisplayNum(oldDistance, ""));
-                    }
-                }
-            }
-        });
-
-        timeStampInput.setInputType(InputType.TYPE_NULL);
-        timeStampInput.setFocusableInTouchMode(false);
-        timeStampInput.setText(data.getTimeStamp().format(DATE_FORMAT));
-        timeStampInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDateTimeDialog(timeStampInput);
-            }
-        });
 
         chargedKwPaidInput.setText(convertToDisplayNum(data.getChargedKwPaid(), ""));
         priceInput.setText(convertToDisplayNum(data.getPrice(), ""));
@@ -121,6 +95,7 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -159,6 +134,62 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void sendInput(String input) {
+        fragmentText.setText(input);
+
+    }
+
+    private void createTimeStampInput() {
+        timeStampInput = findViewById((R.id.timeStampInput));
+        timeStampInput.setInputType(InputType.TYPE_NULL);
+        timeStampInput.setFocusableInTouchMode(false);
+        timeStampInput.setText(data.getTimeStamp().format(DATE_FORMAT));
+        timeStampInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDateTimeDialog(timeStampInput);
+            }
+        });
+    }
+
+    private void createMileageInput() {
+        mileageInput = findViewById(R.id.mileageInput);
+
+        mileageInput.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10000000)});
+        mileageInput.setText(convertToDisplayNum(data.getMileage(), ""));
+        mileageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+                if (!b) {
+                    Long currentMileage = Long.parseLong(convertToNum(mileageInput.getText(), "0"));
+                    if (currentMileage > oldMileage) {
+                        oldDistance += (currentMileage - oldMileage);
+                        distanceInput.setText(convertToDisplayNum(oldDistance, ""));
+                    }
+                }
+            }
+        });
+    }
+
+    private void createChargeTypeInputSpinner() {
+
+        chargeTypeInputSpinner = new CreateChargeTypeInputSpinner();
+        chargeTypeInput = chargeTypeInputSpinner.createSpinner(this, findViewById(R.id.chargeTypeInput), data.getChargeTyp());
+    }
+
+    private void createChargeAssignButton() {
+        chargeAssignButton = findViewById(R.id.chargeAssignButton);
+        chargeAssignButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ChargeDataAssignDialog dialog = new ChargeDataAssignDialog();
+                dialog.show(getSupportFragmentManager(), "ChargeAssignDialog");
+            }
+        });
+    }
+
     private void showDateTimeDialog(EditText dateTimeIn) {
 
         Calendar calendar = Calendar.getInstance();
@@ -190,35 +221,6 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        chargeTypInputSelected = parent.getItemAtPosition(position).toString();
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-        chargeTypInputSelected = adapterView.getItemAtPosition(0).toString();
-
-    }
-
-    private void createChargeTypeInputSpinner() {
-
-        chargeTypeInput = findViewById(R.id.chargeTypeInput);
-        ArrayAdapter<CharSequence> chargeTypeAdapter = ArrayAdapter.createFromResource(this, R.array.ladetypen,
-                android.R.layout.simple_spinner_item);
-        chargeTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        chargeTypeInput.setAdapter(chargeTypeAdapter);
-        chargeTypeInput.setOnItemSelectedListener(this);
-
-        for(int i = 0; i < chargeTypeInput.getCount(); i++) {
-            if (chargeTypeInput.getItemAtPosition(i).toString().equals(data.getChargeTyp())) {
-                chargeTypeInput.setSelection(i);
-                break;
-            }
-        }
-    }
-
     private LocalChargeData createRecord() {
 
         data.setTimeStamp(LocalDateTime.parse(timeStampInput.getText().toString(), DATE_FORMAT));
@@ -227,7 +229,7 @@ public class ChargingActivity extends AppCompatActivity implements AdapterView.O
         data.setChargedKwPaid(Double.parseDouble(convertToNum(chargedKwPaidInput.getText(), "0")));
         data.setPrice(Double.parseDouble(convertToNum(priceInput.getText(), "0")));
         data.setTargetSoc(Integer.parseInt(convertToNum(socInput.getText(), "0")));
-        data.setChargeTyp(chargeTypInputSelected);
+        data.setChargeTyp(chargeTypeInputSpinner.getChargeTypInputSelected());
         data.setBcConsumption(Double.parseDouble(convertToNum(bcConsumptionInput.getText(), "0")));
 
         return data;
