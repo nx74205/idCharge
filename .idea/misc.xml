@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable-anydpi/commit_change.xml" value="0.4453125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable-anydpi/delete_entry.xml" value="0.43846153846153846" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable-anydpi/refresh_data.xml" value="0.4453125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable-mdpi/ic_add.xml" value="0.28854166666666664" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable-mdpi/ic_launcher_background.xml" value="0.278125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.278125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/AppIcon_background.xml" value="0.302" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/Euro_background.xml" value="0.2635416666666667" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/Euro_foreground.xml" value="0.2635416666666667" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/appIcon_background.xml" value="0.302" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/appicon_background.xml" value="0.302" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/average_background.xml" value="0.2635416666666667" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/charging_station_background.xml" value="0.25885416666666666" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/charging_station_foreground.xml" value="0.2635416666666667" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/date_icon.xml" value="0.25885416666666666" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/euro_background.xml" value="0.4453125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/euro_foreground.xml" value="0.4453125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/ic_channel_background.xml" value="0.278125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/ic_channel_foreground.xml" value="0.278125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/ic_launcher_background.xml" value="1.66875" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/charging_data.xml" value="0.5" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/charging_data_assign.xml" value="0.25" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/charging_match.xml" value="0.33" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/fragment_item.xml" value="0.16770833333333332" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/fragment_item_list.xml" value="0.15364583333333334" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/main_list_view.xml" value="0.5" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/menu/charge_data_menu.xml" value="0.42916666666666664" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/AppIcon.xml" value="0.302" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/AppIcon_round.xml" value="0.302" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/Euro.xml" value="0.28854166666666664" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/appicon.xml" value="0.302" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/average.xml" value="0.25885416666666666" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/average_round.xml" value="0.2355" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/charging_sration.xml" value="0.25885416666666666" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/euro.xml" value="0.4453125" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/ic_channel.xml" value="0.25885416666666666" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.247" />
+        <entry key="..\:/Users/Klaus/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.265625" />
+      </map>
+    </option>
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16_PREVIEW" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

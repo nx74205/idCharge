@@ -1,5 +1,8 @@
-<resources>
-    <string name="app_name">IdCharge</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">IdCharge</string>
+
+    <string name="vin" translatable="false" tools:ignore="Typos">WVWZZZE1ZMP015703</string>
+    <string name="baseuri" translatable="false">http://camilla:8484/api/</string>
 
     <string-array name="ladetypen">
         <item>Wallbox</item>

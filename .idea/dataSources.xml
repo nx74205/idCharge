@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Chargedata" uuid="a84bd093-43d4-4a1b-b280-f8157eb11b09">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Klaus\AppData\Local\JetBrains\IntelliJIdea2021.3\device-explorer\Pixel_5_API_30 [emulator-5554]\data\data\de.nx74205.idcharge\databases\Chargedata</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

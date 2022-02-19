@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import android.widget.AbsListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,8 +16,9 @@ import java.util.ArrayList;
 import java.util.OptionalLong;
 
 import de.nx74205.idcharge.charge.ChargingActivity;
-import de.nx74205.idcharge.DbHelper;
 import de.nx74205.idcharge.R;
+import de.nx74205.idcharge.database.DbHelper;
+import de.nx74205.idcharge.database.LocalChargeRepository;
 import de.nx74205.idcharge.model.LocalChargeData;
 
 
@@ -32,13 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<LocalChargeData> chargeDataList;
 
-    DbHelper db;
+    private LocalChargeRepository db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = new LocalChargeRepository(this);
 
         buildRecyclerView();
         addChargeButton = findViewById(R.id.add_charge);
@@ -74,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        db = new DbHelper(this);
-        chargeDataList = db.getCharges();
+        chargeDataList = db.selectAll();
         chargeDataAdapter = new ChargeDataAdapter(chargeDataList);
         recyclerView.setAdapter(chargeDataAdapter);
 
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case NEW_CHARGE_DATA_ACTIVITY:
-                long chargeId = db.insertCharges(chargeData);
+                long chargeId = db.insert(chargeData);
                 if (chargeId != -1) {
                     chargeData.setChargeId((int)chargeId);
                     chargeDataList.add(position, chargeData);
@@ -132,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case CHANGE_CHARGE_DATA_ACTIVITY:
                 if (chargeData.getMileage() == -1L) {
-                    if (db.deleteCharges(chargeData)) {
+                    if (db.delete(chargeData)) {
                         chargeDataList.remove(position);
                         chargeDataAdapter.notifyItemRemoved(position);
                     }
                 } else {
-                        if (db.updateCharges(chargeData)) {
+                        if (db.update(chargeData)) {
                             chargeDataList.set(position, chargeData);
                             chargeDataAdapter.notifyItemChanged(position);
                         }
