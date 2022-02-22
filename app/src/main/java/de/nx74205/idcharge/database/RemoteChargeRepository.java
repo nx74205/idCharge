@@ -26,7 +26,7 @@ public class RemoteChargeRepository {
     public long insert(RemoteChargeData chargeData) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        long result = db.insert(TABLE_NAME, null, setContentValues(chargeData));
+        long result = db.insertOrThrow(TABLE_NAME, null, setContentValues(chargeData));
 
         return result;
     }
@@ -40,13 +40,10 @@ public class RemoteChargeRepository {
         if (cursor.getCount() > 0) {
             long result = db.update(TABLE_NAME, setContentValues(chargeData), "charge_id=?", arguments);
 
-            if (result == -1) {
-                return false;
-            } else {
-                return true;
-            }
+            return (result >= 0);
+
         } else {
-            return false;
+            return (insert(chargeData) > 0);
         }
     }
 
@@ -106,9 +103,14 @@ public class RemoteChargeRepository {
         contentValues.put("vehicle_vin", chargeData.getVehicleVin());
         contentValues.put("charging_status", chargeData.getChargingStatus().name());
         contentValues.put("timestamp", chargeData.getTimestamp().toString());
-        contentValues.put("start_of_charge", chargeData.getStartOfCharge().toString());
-        contentValues.put("end_of_charge", chargeData.getEndOfCharge().toString());
-        contentValues.put("avaerage_charging_power", chargeData.getAverageChargingPower().toString());
+        if (chargeData.getStartOfCharge() != null) {
+            contentValues.put("start_of_charge", chargeData.getStartOfCharge().toString());
+        }
+        if (chargeData.getEndOfCharge() != null) {
+            contentValues.put("end_of_charge", chargeData.getEndOfCharge().toString());
+        }
+        contentValues.put("quantity_charged", chargeData.getQuantityChargedKwh().toString());
+        contentValues.put("average_charging_power", chargeData.getAverageChargingPower().toString());
         contentValues.put("soc_start", chargeData.getSocStart());
         contentValues.put("soc_end", chargeData.getSocEnd());
         contentValues.put("mobile_charge_id", chargeData.getMobileChargeId());

@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IdCharge">
+        android:theme="@style/Theme.IdCharge"
+        android:usesCleartextTraffic="true">
         <activity
             android:name="de.nx74205.idcharge.main.MainActivity"
             android:exported="true">

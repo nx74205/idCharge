@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Chargedata" uuid="a84bd093-43d4-4a1b-b280-f8157eb11b09">
+    <data-source source="LOCAL" name="Android SQLite" uuid="2156f25c-06e2-4f00-8174-7ccb37844c37">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Klaus\AppData\Local\JetBrains\IntelliJIdea2021.3\android\databases\EMULATOR_Pixel_5_API_30\de.nx74205.idcharge\internal\files</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="Chargedata" uuid="d3e10629-d233-4405-a6ee-1f0234d0f449">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\Klaus\AppData\Local\JetBrains\IntelliJIdea2021.3\device-explorer\Pixel_5_API_30 [emulator-5554]\data\data\de.nx74205.idcharge\databases\Chargedata</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.34.0/sqlite-jdbc-3.34.0.jar</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>

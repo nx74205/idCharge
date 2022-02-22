@@ -40,26 +40,6 @@ public class ChargeDataAssignDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.charging_data_assign, container,false);
         someText = view.findViewById(R.id.someText);
         okButton = view.findViewById(R.id.chargeAssignOkButton);
-/*
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.baseuri))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ChargeDataApi chargeDataApi = retrofit.create(ChargeDataApi.class);
-        Call<List<RemoteChargeData>> call = chargeDataApi.getNewChargeData(getResources().getString(R.string.vin), "NOT_SYNCED");
-        call.enqueue(new Callback<List<RemoteChargeData>>() {
-            @Override
-            public void onResponse(Call<List<RemoteChargeData>> call, Response<List<RemoteChargeData>> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<List<RemoteChargeData>> call, Throwable t) {
-
-            }
-        });
-*/
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

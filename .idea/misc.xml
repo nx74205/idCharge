@@ -13,6 +13,7 @@
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/Euro_background.xml" value="0.2635416666666667" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/Euro_foreground.xml" value="0.2635416666666667" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/appIcon_background.xml" value="0.302" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/app_icon_background.xml" value="0.4453125" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/appicon_background.xml" value="0.302" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/average_background.xml" value="0.2635416666666667" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/drawable/charging_station_background.xml" value="0.25885416666666666" />
@@ -29,6 +30,7 @@
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/charging_match.xml" value="0.33" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/fragment_item.xml" value="0.16770833333333332" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/fragment_item_list.xml" value="0.15364583333333334" />
+        <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/iv_refresh_data.xml" value="0.4107789855072464" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/layout/main_list_view.xml" value="0.5" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/menu/charge_data_menu.xml" value="0.42916666666666664" />
         <entry key="..\:/Daten/src/idCharge/app/src/main/res/mipmap-anydpi-v26/AppIcon.xml" value="0.302" />

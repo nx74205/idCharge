@@ -4,14 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
@@ -30,6 +34,8 @@ import de.nx74205.idcharge.charge.helper.InputFilterNoSign;
 import de.nx74205.idcharge.model.LocalChargeData;
 
 public class ChargingActivity extends AppCompatActivity implements ChargeDataAssignDialog.OnInInputListener {
+
+    private UpdateChargeData updateChargeData;
 
     EditText timeStampInput;
     EditText mileageInput;
@@ -55,6 +61,8 @@ public class ChargingActivity extends AppCompatActivity implements ChargeDataAss
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.charging_data);
+
+        updateChargeData = new UpdateChargeData(this);
 
         Intent intent = getIntent();
         data = (LocalChargeData)intent.getSerializableExtra("DATA");
@@ -92,6 +100,9 @@ public class ChargingActivity extends AppCompatActivity implements ChargeDataAss
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.charge_data_menu, menu);
+        startRefreshAnimation(menu);
+        updateChargeData.update();
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -127,8 +138,20 @@ public class ChargingActivity extends AppCompatActivity implements ChargeDataAss
 
                     }
                 });
+
                 AlertDialog myDialog=builder.create();
                 myDialog.show();
+                break;
+
+            case R.id.refresh_data:
+/*
+                if(item.getActionView()!=null)
+                {
+                    // Remove the animation.
+                    item.getActionView().clearAnimation();
+                    item.setActionView(null);
+                }
+*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -188,6 +211,37 @@ public class ChargingActivity extends AppCompatActivity implements ChargeDataAss
                 dialog.show(getSupportFragmentManager(), "ChargeAssignDialog");
             }
         });
+    }
+
+    private void startRefreshAnimation(Menu menu) {
+        MenuItem item = menu.findItem(R.id.refresh_data);
+        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ImageView iv = (ImageView)inflater.inflate(R.layout.iv_refresh_data,null);
+        Animation rotation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        rotation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (!updateChargeData.checkUpdateFinished()) {
+                    iv.startAnimation(rotation);
+                }
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        iv.startAnimation(rotation);
+        item.setActionView(iv);
+
+
     }
 
     private void showDateTimeDialog(EditText dateTimeIn) {
