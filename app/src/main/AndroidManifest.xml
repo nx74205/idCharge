@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="de.nx74205.idcharge.charge.ChargingActivity">
+        <activity android:name="de.nx74205.idcharge.charge.ChargeDataActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.nx74205.idcharge.main.MainActivity"/>
         </activity>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/remoteConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_margin="2dp">
+
+        <ImageView
+                android:id="@+id/iconCalendarView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/date_icon" />
+
+        <TextView
+                android:id="@+id/remoteTimeStampView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Datum"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/iconCalendarView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/remoteVinView"/>
+
+        <TextView
+                android:text="______VIN______"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/remoteVinView"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toEndOf="@+id/remoteTimeStampView"
+                android:layout_marginStart="8dp"/>
+
+        <View
+                android:id="@+id/Lineview"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                tools:layout_editor_absoluteX="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/iconCalendarView"/>
+
+        <TextView
+                android:id="@+id/remoteChargedKwView"
+                android:layout_width="41dp"
+                android:layout_height="wrap_content"
+                android:text="99,99"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="4dp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/remoteSocStartView"/>
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kWh"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@+id/remoteChargedKwView"
+            app:layout_constraintHorizontal_bias="0.434"
+            app:layout_constraintStart_toStartOf="@+id/remoteChargedKwView"
+            app:layout_constraintTop_toBottomOf="@+id/remoteChargedKwView"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+                android:id="@+id/remoteSocStartView"
+                android:layout_width="43dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="999 %"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/remoteChargedKwView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/remoteSocEndView"/>
+
+        <TextView
+                android:id="@+id/remoteSocViewDescription1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Von SOC"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/remoteSocStartView"
+                app:layout_constraintStart_toStartOf="@+id/remoteSocStartView"
+                app:layout_constraintTop_toBottomOf="@+id/remoteSocStartView"/>
+
+        <TextView
+                android:id="@+id/remoteSocEndView"
+                android:layout_width="43dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="999 %"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/remoteSocStartView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/remoteAvgChargedKwView"/>
+
+        <TextView
+                android:id="@+id/remoteSocViewDescription2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bis SOC"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/remoteSocEndView"
+                app:layout_constraintStart_toStartOf="@+id/remoteSocEndView"
+                app:layout_constraintTop_toBottomOf="@+id/remoteSocEndView"/>
+
+        <TextView
+                android:id="@+id/remoteAvgChargedKwView"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="999,99"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/remoteSocEndView"
+                android:layout_marginStart="16dp"
+                app:layout_constraintTop_toTopOf="@+id/Lineview"/>
+
+        <TextView
+                android:id="@+id/remotetextView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&#216; kW"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/remoteAvgChargedKwView"
+                app:layout_constraintHorizontal_bias="0.434"
+                app:layout_constraintStart_toStartOf="@+id/remoteAvgChargedKwView"
+                app:layout_constraintTop_toBottomOf="@+id/remoteAvgChargedKwView"
+                tools:ignore="HardcodedText" />
+
+        <TextView
+                android:text="STATUS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/textView7"
+                app:layout_constraintTop_toTopOf="@+id/Lineview"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintStart_toEndOf="@+id/remoteAvgChargedKwView"
+                android:layout_marginStart="16dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

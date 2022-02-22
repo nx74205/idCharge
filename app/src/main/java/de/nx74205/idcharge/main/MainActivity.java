@@ -15,9 +15,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.OptionalLong;
 
-import de.nx74205.idcharge.charge.ChargingActivity;
+import de.nx74205.idcharge.charge.ChargeDataActivity;
 import de.nx74205.idcharge.R;
-import de.nx74205.idcharge.database.DbHelper;
 import de.nx74205.idcharge.database.LocalChargeRepository;
 import de.nx74205.idcharge.model.LocalChargeData;
 
@@ -47,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
         addChargeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Long mileage;
+                long mileage;
                 OptionalLong optionalMileage = chargeDataList
                         .stream()
-                        .mapToLong(m -> m.getMileage())
+                        .mapToLong(LocalChargeData::getMileage)
                         .max();
                 if(optionalMileage.isPresent()) {
                     mileage = optionalMileage.getAsLong();
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 chargeData.setViewPosition(chargeDataList.size());
                 chargeData.setMileage(mileage);
 
-                Intent intent = new Intent(MainActivity.this, ChargingActivity.class);
+                Intent intent = new Intent(MainActivity.this, ChargeDataActivity.class);
                 intent.putExtra("DATA", chargeData);
                 startActivityIfNeeded(intent, NEW_CHARGE_DATA_ACTIVITY);
 
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 LocalChargeData data = chargeDataList.get(position);
                 data.setViewPosition(position);
 
-                Intent intent = new Intent(MainActivity.this, ChargingActivity.class);
+                Intent intent = new Intent(MainActivity.this, ChargeDataActivity.class);
                 intent.putExtra("DATA", data);
                 startActivityIfNeeded(intent, CHANGE_CHARGE_DATA_ACTIVITY);
 

@@ -74,7 +74,7 @@ public class ChargeDataAdapter extends RecyclerView.Adapter<ChargeDataAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_list_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_local_charge_data, parent, false);
         return new ViewHolder(v, listener);
     }
 

@@ -78,8 +78,5 @@ public class UpdateChargeData {
 
     public boolean checkUpdateFinished() {
         return updateFinished;
-    };
-
-
-
+    }
 }
