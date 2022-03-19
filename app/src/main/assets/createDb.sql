@@ -8,7 +8,8 @@ create Table local_charges
  price            TEXT,
  target_soc       INTEGER,
  charge_typ       TEXT,
- bc_consumption   TEXT
+ bc_consumption   TEXT,
+ charge_data_id   INTEGER
 );
 
 create Table remote_charges

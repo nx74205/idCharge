@@ -1,8 +1,9 @@
 package de.nx74205.idcharge.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class RemoteChargeData {
+public class RemoteChargeData implements Serializable {
     private Integer id;
     private String vehicleVin;
     private ChargingStatus chargingStatus;

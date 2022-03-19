@@ -18,7 +18,9 @@ import java.util.OptionalLong;
 import de.nx74205.idcharge.charge.ChargeDataActivity;
 import de.nx74205.idcharge.R;
 import de.nx74205.idcharge.database.LocalChargeRepository;
+import de.nx74205.idcharge.database.RemoteChargeRepository;
 import de.nx74205.idcharge.model.LocalChargeData;
+import de.nx74205.idcharge.model.RemoteChargeData;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<LocalChargeData> chargeDataList;
 
-    private LocalChargeRepository db;
+    private LocalChargeRepository mobileDataRepository;
+    private RemoteChargeRepository remoteChargeRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = new LocalChargeRepository(this);
+        mobileDataRepository = new LocalChargeRepository(this);
+        remoteChargeRepository = new RemoteChargeRepository(this);
+
 
         buildRecyclerView();
         addChargeButton = findViewById(R.id.add_charge);
@@ -62,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 chargeData.setMileage(mileage);
 
                 Intent intent = new Intent(MainActivity.this, ChargeDataActivity.class);
-                intent.putExtra("DATA", chargeData);
+                intent.putExtra(LocalChargeData.class.getSimpleName(), chargeData);
                 startActivityIfNeeded(intent, NEW_CHARGE_DATA_ACTIVITY);
 
             }
@@ -75,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        chargeDataList = db.selectAll();
+        chargeDataList = mobileDataRepository.selectAll();
         chargeDataAdapter = new ChargeDataAdapter(chargeDataList);
         recyclerView.setAdapter(chargeDataAdapter);
 
@@ -85,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                //https://stackoverflow.com/questions/29024058/recyclerview-scrolled-up-down-listener
             }
 
             @Override
@@ -106,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 data.setViewPosition(position);
 
                 Intent intent = new Intent(MainActivity.this, ChargeDataActivity.class);
-                intent.putExtra("DATA", data);
+                intent.putExtra(LocalChargeData.class.getSimpleName(), data);
                 startActivityIfNeeded(intent, CHANGE_CHARGE_DATA_ACTIVITY);
 
             }
@@ -118,31 +123,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        LocalChargeData chargeData = (LocalChargeData)data.getSerializableExtra("DATA");
-        int position = chargeData.getViewPosition();
+        LocalChargeData mobileChargeData = (LocalChargeData)data.getSerializableExtra(LocalChargeData.class.getSimpleName());
+        RemoteChargeData remoteChargeData = (RemoteChargeData)data.getSerializableExtra(RemoteChargeData.class.getSimpleName());
+
+        int position = mobileChargeData.getViewPosition();
 
         switch (requestCode) {
             case NEW_CHARGE_DATA_ACTIVITY:
-                long chargeId = db.insert(chargeData);
+                long chargeId = mobileDataRepository.insert(mobileChargeData);
                 if (chargeId != -1) {
-                    chargeData.setChargeId((int)chargeId);
-                    chargeDataList.add(position, chargeData);
+                    mobileChargeData.setChargeId((int)chargeId);
+                    chargeDataList.add(position, mobileChargeData);
                     chargeDataAdapter.notifyItemInserted(position);
                 };
                 break;
             case CHANGE_CHARGE_DATA_ACTIVITY:
-                if (chargeData.getMileage() == -1L) {
-                    if (db.delete(chargeData)) {
+                if (mobileChargeData.getMileage() == -1L) {
+                    if (mobileDataRepository.delete(mobileChargeData)) {
+                        if (remoteChargeData != null) {
+                            remoteChargeData.setMobileChargeId(null);
+                        }
                         chargeDataList.remove(position);
                         chargeDataAdapter.notifyItemRemoved(position);
                     }
                 } else {
-                        if (db.update(chargeData)) {
-                            chargeDataList.set(position, chargeData);
+                        if (mobileDataRepository.update(mobileChargeData)) {
+                            chargeDataList.set(position, mobileChargeData);
                             chargeDataAdapter.notifyItemChanged(position);
                         }
                 }
                 break;
+        }
+        if (remoteChargeData != null) {
+            remoteChargeRepository.update(remoteChargeData);
         }
     }
 }

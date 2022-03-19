@@ -25,19 +25,10 @@ public class LocalChargeData implements Serializable {
 
     private int viewPosition;
 
+    private Integer chargeDataId;
+
     public LocalChargeData() {
 
-    }
-
-    public LocalChargeData(LocalDateTime timeStamp, long mileage, double chargedKwPaid, double price,
-                           int targetSoc, String chargeTyp, double bcConsumption) {
-        this.timeStamp = timeStamp;
-        this.mileage = mileage;
-        this.chargedKwPaid = chargedKwPaid;
-        this.price = price;
-        this.targetSoc = targetSoc;
-        this.chargeTyp = chargeTyp;
-        this.bcConsumption = bcConsumption;
     }
 
     public Integer getChargeId() {
@@ -118,5 +109,13 @@ public class LocalChargeData implements Serializable {
 
     public void setDistance(Long distance) {
         this.distance = distance;
+    }
+
+    public Integer getChargeDataId() {
+        return chargeDataId;
+    }
+
+    public void setChargeDataId(Integer chargeDataId) {
+        this.chargeDataId = chargeDataId;
     }
 }

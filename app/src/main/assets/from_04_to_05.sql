@@ -1,0 +1,1 @@
+ALTER TABLE local_charges ADD COLUMN charge_data_id INTEGER;

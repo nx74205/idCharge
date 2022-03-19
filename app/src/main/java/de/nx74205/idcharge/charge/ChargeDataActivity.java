@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,21 +12,24 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.graphics.drawable.DrawableWrapper;
+import androidx.fragment.app.Fragment;
 import de.nx74205.idcharge.R;
+import de.nx74205.idcharge.database.RemoteChargeRepository;
 import de.nx74205.idcharge.model.LocalChargeData;
+import de.nx74205.idcharge.model.RemoteChargeData;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ChargeDataActivity extends AppCompatActivity
-        implements AssignRemoteButtonFragment.EditChargeButtonClickedListener {
+        implements AssignRemoteButtonFragment.EditChargeButtonClickedListener, AssignListFragment.RemoteChargeListClickedListener {
 
-    private LocalChargeData data;
+    private RemoteChargeData remoteChargeData;
     private EditChargeDataFragment editChargeDataFragment;
-    private AssignRemoteButtonFragment assignRemoteButtonFragment;
     private UpdateChargeData updateChargeData;
 
 
@@ -37,22 +39,31 @@ public class ChargeDataActivity extends AppCompatActivity
         setContentView(R.layout.activity_charge_data);
 
         Intent intent = getIntent();
-        data = (LocalChargeData)intent.getSerializableExtra("DATA");
+        LocalChargeData localChargeData = (LocalChargeData)intent.getSerializableExtra(LocalChargeData.class.getSimpleName());
 
         updateChargeData = new UpdateChargeData(this);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Eintrag");
-        actionBar.setBackgroundDrawable(this.getDrawable(R.drawable.grey_background));
+        //actionBar.setBackgroundDrawable(this.getDrawable(R.drawable.grey_background));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        editChargeDataFragment = new EditChargeDataFragment(data);
-        assignRemoteButtonFragment = new AssignRemoteButtonFragment();
+        editChargeDataFragment = new EditChargeDataFragment(localChargeData);
+        fragmentFrameReplace(R.id.addChargeDataFrame, editChargeDataFragment);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.addChargeDataFrame, editChargeDataFragment)
-                .replace(R.id.remoteChargeDataFrame, assignRemoteButtonFragment)
-                .commit();
+        if (localChargeData.getChargeDataId() != null && localChargeData.getChargeDataId() > 0) {
+
+            remoteChargeData = new RemoteChargeRepository(this).findById(localChargeData.getChargeDataId());
+            if (remoteChargeData != null) {
+                remoteChargeData.setMobileChargeId(localChargeData.getChargeId());
+                fragmentFrameReplace(R.id.remoteChargeDataFrame,
+                        new AssignListFragment(new ArrayList<>(Collections.singletonList(remoteChargeData)), localChargeData.getChargeId()));
+            } else {
+                fragmentFrameReplace(R.id.remoteChargeDataFrame, new AssignRemoteButtonFragment());
+            }
+        } else {
+            fragmentFrameReplace(R.id.remoteChargeDataFrame, new AssignRemoteButtonFragment());
+        }
     }
 
     @Override
@@ -60,7 +71,7 @@ public class ChargeDataActivity extends AppCompatActivity
 
         getMenuInflater().inflate(R.menu.charge_data_menu, menu);
         startRefreshAnimation(menu);
-        updateChargeData.update();
+        updateChargeData.getRemoteData();
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -72,7 +83,8 @@ public class ChargeDataActivity extends AppCompatActivity
         Intent resultIntent = new Intent();
         switch (item.getItemId()) {
             case R.id.save_page:
-                resultIntent.putExtra("DATA", editChargeDataFragment.getData());
+                resultIntent.putExtra(LocalChargeData.class.getSimpleName(), editChargeDataFragment.getData());
+                resultIntent.putExtra(RemoteChargeData.class.getSimpleName(), remoteChargeData);
 
                 setResult(RESULT_OK, resultIntent);
                 finish();
@@ -85,8 +97,9 @@ public class ChargeDataActivity extends AppCompatActivity
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        data.setMileage(-1L);
-                        resultIntent.putExtra("DATA", data);
+                        LocalChargeData localChargeData = editChargeDataFragment.getData();
+                        localChargeData.setMileage(-1L);
+                        resultIntent.putExtra(LocalChargeData.class.getSimpleName(), localChargeData);
                         setResult(RESULT_OK, resultIntent);
                         finish();
                     }
@@ -147,7 +160,43 @@ public class ChargeDataActivity extends AppCompatActivity
 
     @Override
     public void assignRemoteButtonClicked() {
-        Toast t = Toast.makeText(this, "Button clicked", Toast.LENGTH_LONG);
-        t.show();
+
+        Intent intent = new Intent(ChargeDataActivity.this, AssignChargeDataActivity.class);
+        intent.putExtra(LocalChargeData.class.getSimpleName(), editChargeDataFragment.getData());
+        startActivityIfNeeded(intent, 1);
+    }
+
+    @Override
+    public void remoteChargeListClicked(RemoteChargeData data) {
+        Intent intent = new Intent(ChargeDataActivity.this, AssignChargeDataActivity.class);
+        intent.putExtra(LocalChargeData.class.getSimpleName(), editChargeDataFragment.getData());
+        startActivityIfNeeded(intent, 1);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+
+            remoteChargeData = (RemoteChargeData)data.getSerializableExtra(RemoteChargeData.class.getSimpleName());
+            if (remoteChargeData.getMobileChargeId() > 0) {
+                editChargeDataFragment.getData().setChargeDataId(remoteChargeData.getId());
+
+                AssignListFragment assignListFragment = new AssignListFragment(new ArrayList<>(Collections.singletonList(remoteChargeData)),
+                        remoteChargeData.getMobileChargeId());
+                fragmentFrameReplace(R.id.remoteChargeDataFrame, assignListFragment);
+            } else {
+                editChargeDataFragment.getData().setChargeDataId(0);
+                fragmentFrameReplace(R.id.remoteChargeDataFrame, new AssignRemoteButtonFragment());
+            }
+        }
+    }
+
+    private void fragmentFrameReplace(int frame, Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(frame, fragment)
+                .commit();
     }
 }

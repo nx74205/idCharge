@@ -21,7 +21,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @SuppressLint("StaticFieldLeak")
     private static DbHelper sInstance;
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME ="Chargedata";
     private Context context;
 

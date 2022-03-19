@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Android SQLite" uuid="2156f25c-06e2-4f00-8174-7ccb37844c37">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$USER_HOME$/AppData/Local/JetBrains/IntelliJIdea2021.3/device-explorer/Pixel_5_API_30 [emulator-5554]/data/data/de.nx74205.idcharge/databases/Chargedata</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="Chargedata" uuid="d3e10629-d233-4405-a6ee-1f0234d0f449">
+    <data-source source="LOCAL" name="Chargedata" uuid="78b8409b-21ef-4b3d-ac3f-e1acd9c6d6a9">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>

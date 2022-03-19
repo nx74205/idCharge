@@ -35,9 +35,9 @@ public class EditChargeDataFragment extends Fragment {
     Spinner chargeTypeInput;
     EditText bcConsumptionInput;
 
-    LocalChargeData data;
-    Long oldMileage;
-    Long oldDistance;
+    private LocalChargeData data;
+    private Long oldMileage;
+    private Long oldDistance;
 
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 

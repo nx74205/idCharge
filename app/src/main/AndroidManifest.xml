@@ -25,6 +25,10 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.nx74205.idcharge.main.MainActivity"/>
         </activity>
+        <activity android:name="de.nx74205.idcharge.charge.AssignChargeDataActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value="de.nx74205.idcharge.charge.ChargeDataActivity"/>
+        </activity>
     </application>
 
 </manifest>

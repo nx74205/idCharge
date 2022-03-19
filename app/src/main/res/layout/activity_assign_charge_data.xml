@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/assignTextView1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ladedaten intern"
+            android:ems="10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textAlignment="center"
+            android:textSize="14sp"/>
+
+    <FrameLayout
+            android:id="@+id/showLocalChargeDataFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:padding="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignTextView1">
+
+    </FrameLayout>
+    <TextView
+            android:id="@+id/assignTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ladedaten extern"
+            android:ems="10"
+            app:layout_constraintTop_toBottomOf="@+id/showLocalChargeDataFrame"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAlignment="center"
+            android:textSize="14sp"/>
+    <FrameLayout
+            android:id="@+id/actremoteChargeItemsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="4dp"
+            android:scrollbars="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignTextView2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

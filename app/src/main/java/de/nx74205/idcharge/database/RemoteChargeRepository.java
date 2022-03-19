@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import de.nx74205.idcharge.model.ChargingStatus;
+import de.nx74205.idcharge.model.LocalChargeData;
 import de.nx74205.idcharge.model.RemoteChargeData;
 
 import java.time.LocalDateTime;
@@ -14,11 +15,14 @@ import java.util.ArrayList;
 
 public class RemoteChargeRepository {
     private final DbHelper dbHelper;
+    private final Context context;
+
     private static final String TABLE_NAME = "remote_charges";
 
     private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public RemoteChargeRepository(Context context) {
+        this.context = context;
         this.dbHelper = DbHelper.getInstance(context);
 
     }
@@ -26,9 +30,8 @@ public class RemoteChargeRepository {
     public long insert(RemoteChargeData chargeData) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        long result = db.insertOrThrow(TABLE_NAME, null, setContentValues(chargeData));
 
-        return result;
+        return db.insertOrThrow(TABLE_NAME, null, setContentValues(chargeData));
     }
 
     public Boolean update(RemoteChargeData chargeData) {
@@ -39,9 +42,8 @@ public class RemoteChargeRepository {
 
         if (cursor.getCount() > 0) {
             long result = db.update(TABLE_NAME, setContentValues(chargeData), "charge_id=?", arguments);
-
+            cursor.close();
             return (result >= 0);
-
         } else {
             return (insert(chargeData) > 0);
         }
@@ -67,34 +69,45 @@ public class RemoteChargeRepository {
         return returnCode;
     }
 
-    @SuppressLint("Range")
     public ArrayList<RemoteChargeData> selectAll(){
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+        LocalChargeRepository localChargeRepository = new LocalChargeRepository(context);
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         ArrayList<RemoteChargeData> chargeDataList = new ArrayList<>();
 
         Cursor cursor = db.rawQuery("select * from " + TABLE_NAME, null);
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            RemoteChargeData chargeRecord = new RemoteChargeData();
+            RemoteChargeData chargeData = getContentValues(cursor);
 
-            chargeRecord.setId(cursor.getInt(cursor.getColumnIndex("charge_id")));
-            chargeRecord.setVehicleVin(cursor.getString(cursor.getColumnIndex("vehicle_vin")));
-            chargeRecord.setChargingStatus(ChargingStatus.valueOf(cursor.getString(cursor.getColumnIndex("charging_status"))));
-            chargeRecord.setTimestamp(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("timestamp")), DATE_FORMAT));
-            chargeRecord.setStartOfCharge(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("start_of_charge")), DATE_FORMAT));
-            chargeRecord.setEndOfCharge(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("end_of_charge")), DATE_FORMAT));
-            chargeRecord.setQuantityChargedKwh(Double.parseDouble(cursor.getString(cursor.getColumnIndex("quantity_charged"))));
-            chargeRecord.setAverageChargingPower(Double.parseDouble(cursor.getString(cursor.getColumnIndex("average_charging_power"))));
-            chargeRecord.setSocStart(cursor.getInt(cursor.getColumnIndex("soc_start")));
-            chargeRecord.setSocEnd(cursor.getInt(cursor.getColumnIndex("soc_end")));
-            chargeRecord.setMobileChargeId(cursor.getInt(cursor.getColumnIndex("mobile_charge_id")));
-            chargeDataList.add(chargeRecord);
-
+            if (chargeData.getMobileChargeId() == 0) {
+                LocalChargeData localChargeData = localChargeRepository.findByChargeDataId(chargeData.getId());
+                if (localChargeData != null) {
+                    chargeData.setMobileChargeId(localChargeData.getChargeId());
+                }
+            }
+            chargeDataList.add(chargeData);
             cursor.moveToNext();
         }
+        cursor.close();
+
         return chargeDataList;
+    }
+
+    public RemoteChargeData findById(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] arguments = {Integer.valueOf(id).toString()};
+        Cursor cursor = db.rawQuery("select * from " + TABLE_NAME + " where charge_id = ?", arguments);
+
+        if (cursor.getCount() != 1) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            return getContentValues(cursor);
+        }
     }
 
     private ContentValues setContentValues(RemoteChargeData chargeData) {
@@ -116,6 +129,30 @@ public class RemoteChargeRepository {
         contentValues.put("mobile_charge_id", chargeData.getMobileChargeId());
 
         return contentValues;
+    }
+
+    @SuppressLint("Range")
+    private RemoteChargeData getContentValues(Cursor cursor) {
+        RemoteChargeData chargeRecord = new RemoteChargeData();
+
+        chargeRecord.setId(cursor.getInt(cursor.getColumnIndex("charge_id")));
+        chargeRecord.setVehicleVin(cursor.getString(cursor.getColumnIndex("vehicle_vin")));
+        chargeRecord.setChargingStatus(ChargingStatus.valueOf(cursor.getString(cursor.getColumnIndex("charging_status"))));
+        chargeRecord.setTimestamp(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("timestamp"))));
+        if (cursor.getString(cursor.getColumnIndex("start_of_charge")) != null) {
+            chargeRecord.setStartOfCharge(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("start_of_charge"))));
+        }
+        if(cursor.getString(cursor.getColumnIndex("end_of_charge")) != null) {
+            chargeRecord.setEndOfCharge(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("end_of_charge"))));
+        }
+        chargeRecord.setQuantityChargedKwh(Double.parseDouble(cursor.getString(cursor.getColumnIndex("quantity_charged"))));
+        chargeRecord.setAverageChargingPower(Double.parseDouble(cursor.getString(cursor.getColumnIndex("average_charging_power"))));
+        chargeRecord.setSocStart(cursor.getInt(cursor.getColumnIndex("soc_start")));
+        chargeRecord.setSocEnd(cursor.getInt(cursor.getColumnIndex("soc_end")));
+        chargeRecord.setMobileChargeId(cursor.getInt(cursor.getColumnIndex("mobile_charge_id")));
+
+        return chargeRecord;
+
     }
 
 }

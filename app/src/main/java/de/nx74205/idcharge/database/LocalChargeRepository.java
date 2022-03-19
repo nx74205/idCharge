@@ -40,11 +40,7 @@ public class LocalChargeRepository {
         if (cursor.getCount() > 0) {
             long result = db.update(TABLE_NAME, setContentValues(chargeData), "charge_id=?", arguments);
 
-            if (result == -1) {
-                return false;
-            } else {
-                return true;
-            }
+            return result != -1;
         } else {
             return false;
         }
@@ -70,7 +66,33 @@ public class LocalChargeRepository {
         }
     }
 
-    @SuppressLint("Range")
+    public LocalChargeData findById(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] arguments = {Integer.valueOf(id).toString()};
+        Cursor cursor = db.rawQuery("select * from " + TABLE_NAME + " where charge_id = ?", arguments);
+
+        if (cursor.getCount() != 1) {
+            return null;
+        } else {
+            return getContentValues(cursor);
+        }
+    }
+
+    public LocalChargeData findByChargeDataId(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] arguments = {Integer.valueOf(id).toString()};
+        Cursor cursor = db.rawQuery("select * from " + TABLE_NAME + " where charge_data_id = ?", arguments);
+
+        if (cursor.getCount() != 1) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            return getContentValues(cursor);
+        }
+    }
+
     public ArrayList<LocalChargeData> selectAll(){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -80,19 +102,7 @@ public class LocalChargeRepository {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            LocalChargeData chargeRecord = new LocalChargeData();
-
-            chargeRecord.setChargeId(cursor.getInt(cursor.getColumnIndex("charge_id")));
-            chargeRecord.setTimeStamp(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("timestamp")), DATE_FORMAT));
-            chargeRecord.setMileage(cursor.getLong(cursor.getColumnIndex("mileage")));
-            chargeRecord.setDistance(cursor.getLong(cursor.getColumnIndex("distance")));
-            chargeRecord.setChargedKwPaid(Double.parseDouble(cursor.getString(cursor.getColumnIndex("charge_kw_paid"))));
-            chargeRecord.setPrice(Double.parseDouble(cursor.getString(cursor.getColumnIndex("price"))));
-            chargeRecord.setTargetSoc(cursor.getInt(cursor.getColumnIndex("target_soc")));
-            chargeRecord.setChargeTyp(cursor.getString(cursor.getColumnIndex("charge_typ")));
-            chargeRecord.setBcConsumption(Double.parseDouble(cursor.getString(cursor.getColumnIndex("bc_consumption"))));
-            chargeDataList.add(chargeRecord);
-
+            chargeDataList.add(getContentValues(cursor));
             cursor.moveToNext();
         }
         return chargeDataList;
@@ -108,7 +118,26 @@ public class LocalChargeRepository {
         contentValues.put("target_soc", chargeData.getTargetSoc());
         contentValues.put("charge_typ", chargeData.getChargeTyp());
         contentValues.put("bc_consumption", chargeData.getBcConsumption().toString());
+        contentValues.put("charge_data_id", chargeData.getChargeDataId());
 
         return contentValues;
+    }
+
+    @SuppressLint("Range")
+    private LocalChargeData getContentValues(Cursor cursor) {
+        LocalChargeData chargeRecord = new LocalChargeData();
+
+        chargeRecord.setChargeId(cursor.getInt(cursor.getColumnIndex("charge_id")));
+        chargeRecord.setTimeStamp(LocalDateTime.parse(cursor.getString(cursor.getColumnIndex("timestamp")), DATE_FORMAT));
+        chargeRecord.setMileage(cursor.getLong(cursor.getColumnIndex("mileage")));
+        chargeRecord.setDistance(cursor.getLong(cursor.getColumnIndex("distance")));
+        chargeRecord.setChargedKwPaid(Double.parseDouble(cursor.getString(cursor.getColumnIndex("charge_kw_paid"))));
+        chargeRecord.setPrice(Double.parseDouble(cursor.getString(cursor.getColumnIndex("price"))));
+        chargeRecord.setTargetSoc(cursor.getInt(cursor.getColumnIndex("target_soc")));
+        chargeRecord.setChargeTyp(cursor.getString(cursor.getColumnIndex("charge_typ")));
+        chargeRecord.setBcConsumption(Double.parseDouble(cursor.getString(cursor.getColumnIndex("bc_consumption"))));
+        chargeRecord.setChargeDataId(cursor.getInt((cursor.getColumnIndex("charge_data_id"))));
+
+        return chargeRecord;
     }
 }
