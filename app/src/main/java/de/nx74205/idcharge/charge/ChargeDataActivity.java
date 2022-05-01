@@ -9,21 +9,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import de.nx74205.idcharge.R;
+import de.nx74205.idcharge.database.LocalChargeRepository;
 import de.nx74205.idcharge.database.RemoteChargeRepository;
 import de.nx74205.idcharge.model.LocalChargeData;
 import de.nx74205.idcharge.model.RemoteChargeData;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class ChargeDataActivity extends AppCompatActivity
         implements AssignRemoteButtonFragment.EditChargeButtonClickedListener, AssignListFragment.RemoteChargeListClickedListener {
@@ -45,7 +50,6 @@ public class ChargeDataActivity extends AppCompatActivity
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Eintrag");
-        //actionBar.setBackgroundDrawable(this.getDrawable(R.drawable.grey_background));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         editChargeDataFragment = new EditChargeDataFragment(localChargeData);
@@ -71,6 +75,7 @@ public class ChargeDataActivity extends AppCompatActivity
 
         getMenuInflater().inflate(R.menu.charge_data_menu, menu);
         startRefreshAnimation(menu);
+
         updateChargeData.getRemoteData();
 
         return super.onCreateOptionsMenu(menu);
@@ -98,7 +103,7 @@ public class ChargeDataActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         LocalChargeData localChargeData = editChargeDataFragment.getData();
-                        localChargeData.setMileage(-1L);
+                        localChargeData.setRecordStatus("D");
                         resultIntent.putExtra(LocalChargeData.class.getSimpleName(), localChargeData);
                         setResult(RESULT_OK, resultIntent);
                         finish();
@@ -116,14 +121,15 @@ public class ChargeDataActivity extends AppCompatActivity
                 break;
 
             case R.id.refresh_data:
-/*
-                if(item.getActionView()!=null)
-                {
-                    // Remove the animation.
-                    item.getActionView().clearAnimation();
-                    item.setActionView(null);
+
+                LocalChargeData localChargeData = editChargeDataFragment.getData();
+                if (localChargeData.getChargeDataId() > 0) {
+                    updateChargeData.postMobileData(localChargeData);
+                    localChargeData.setRecordStatus("R");
+                    resultIntent.putExtra(LocalChargeData.class.getSimpleName(), localChargeData);
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
                 }
-*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -154,6 +160,13 @@ public class ChargeDataActivity extends AppCompatActivity
             }
         });
 
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(item);
+            }
+        });
+
         iv.startAnimation(rotation);
         item.setActionView(iv);
     }
@@ -181,7 +194,7 @@ public class ChargeDataActivity extends AppCompatActivity
         if (resultCode == RESULT_OK) {
 
             remoteChargeData = (RemoteChargeData)data.getSerializableExtra(RemoteChargeData.class.getSimpleName());
-            if (remoteChargeData.getMobileChargeId() > 0) {
+            if (remoteChargeData.getMobileChargeId() != null) {
                 editChargeDataFragment.getData().setChargeDataId(remoteChargeData.getId());
 
                 AssignListFragment assignListFragment = new AssignListFragment(new ArrayList<>(Collections.singletonList(remoteChargeData)),

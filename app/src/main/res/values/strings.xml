@@ -2,7 +2,8 @@
     <string name="app_name" translatable="false">IdCharge</string>
 
     <string name="vin" translatable="false" tools:ignore="Typos">WVWZZZE1ZMP015703</string>
-    <string name="baseuri" translatable="false">http://camilla:8484/api/</string>
+    <string name="baseuri" translatable="false">http://192.168.0.140:8484/api/</string>
+    <string name="baseuri2" translatable="false">http://192.168.0.45:8080/api/</string>
 
     <string-array name="ladetypen">
         <item>Wallbox</item>

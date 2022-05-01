@@ -14,7 +14,7 @@ public interface ChargeDataApi {
                                                   @Query("operation") String operation);
 
     @POST("postcharge")
-    Call postChargeData(@Body List<LocalChargeData> localChargeData);
+    Call<LocalChargeData> postChargeData(@Body LocalChargeData localChargeData);
 
 
 }

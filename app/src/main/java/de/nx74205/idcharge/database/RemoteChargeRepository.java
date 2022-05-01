@@ -58,15 +58,28 @@ public class RemoteChargeRepository {
         Cursor cursor = db.rawQuery("select * from " + TABLE_NAME + " where charge_id = ?", arguments);
 
         if (cursor.getCount() > 0) {
-            long result = db.delete(TABLE_NAME, "charge_id=?", arguments);
+            returnCode = deleteById(chargeData.getId());
 
-            returnCode = result != -1;
         } else {
             returnCode = false;
         }
         
         cursor.close();
         return returnCode;
+    }
+
+    public boolean deleteUnUsed() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        return (db.delete(TABLE_NAME, "mobile_charge_id is null", null) > 0);
+    }
+
+    public Boolean deleteById(Integer id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String[] arguments = {id.toString()};
+
+        return (db.delete(TABLE_NAME, "charge_id=?", arguments) != -1);
+
     }
 
     public ArrayList<RemoteChargeData> selectAll(){

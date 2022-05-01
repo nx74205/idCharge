@@ -81,13 +81,13 @@ public class AssignListFragment extends Fragment {
                 RemoteChargeRepository repository = new RemoteChargeRepository(v.getContext());
 
                 if (oldPosition == position) {
-                    if (chargeDataList.get(position).getMobileChargeId() <= 0) {
+                    if (chargeDataList.get(position).getMobileChargeId() == null) {
                         chargeDataList.get(position).setMobileChargeId(mobileChargeId);
                     } else {
-                        chargeDataList.get(position).setMobileChargeId(-1);
+                        chargeDataList.get(position).setMobileChargeId(null);
                     }
                 } else {
-                    chargeDataList.get(oldPosition).setMobileChargeId(-1);
+                    chargeDataList.get(oldPosition).setMobileChargeId(null);
                     chargeDataList.get(position).setMobileChargeId(mobileChargeId);
 
                     repository.update(chargeDataList.get(oldPosition));

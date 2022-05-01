@@ -30,5 +30,4 @@
                        android:value="de.nx74205.idcharge.charge.ChargeDataActivity"/>
         </activity>
     </application>
-
 </manifest>

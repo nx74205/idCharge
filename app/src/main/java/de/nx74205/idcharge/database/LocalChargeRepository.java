@@ -108,6 +108,21 @@ public class LocalChargeRepository {
         return chargeDataList;
     }
 
+    public ArrayList<LocalChargeData> selectAssigned() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        ArrayList<LocalChargeData> chargeDataList = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select * from " + TABLE_NAME + " where charge_data_id > 0", null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            chargeDataList.add(getContentValues(cursor));
+            cursor.moveToNext();
+        }
+        return chargeDataList;
+    }
+
     private ContentValues setContentValues(LocalChargeData chargeData) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("timestamp", chargeData.getTimeStamp().format(DATE_FORMAT));

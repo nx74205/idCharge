@@ -6,27 +6,18 @@ import java.time.LocalDateTime;
 public class LocalChargeData implements Serializable {
 
     private Integer chargeId;
-
+    private String vin;
     private LocalDateTime timeStamp;
-
     private Long mileage;
-
     private Long distance;
-
     private Double chargedKwPaid;
-
     private Double price;
-
     private Integer targetSoc;
-
     private String chargeTyp;
-
     private Double bcConsumption;
-
     private int viewPosition;
-
     private Integer chargeDataId;
-
+    private String recordStatus;
     public LocalChargeData() {
 
     }
@@ -37,6 +28,14 @@ public class LocalChargeData implements Serializable {
 
     public void setChargeId(Integer chargeId) {
         this.chargeId = chargeId;
+    }
+
+    public String getVin() {
+        return vin;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     public LocalDateTime getTimeStamp() {
@@ -117,5 +116,13 @@ public class LocalChargeData implements Serializable {
 
     public void setChargeDataId(Integer chargeDataId) {
         this.chargeDataId = chargeDataId;
+    }
+
+    public String getRecordStatus() {
+        return recordStatus;
+    }
+
+    public void setRecordStatus(String recordStatus) {
+        this.recordStatus = recordStatus;
     }
 }

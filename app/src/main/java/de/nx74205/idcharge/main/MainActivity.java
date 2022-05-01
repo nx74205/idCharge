@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<LocalChargeData> chargeDataList;
 
-    private LocalChargeRepository mobileDataRepository;
+    private LocalChargeRepository localChargeRepository;
     private RemoteChargeRepository remoteChargeRepository;
 
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mobileDataRepository = new LocalChargeRepository(this);
+        localChargeRepository = new LocalChargeRepository(this);
         remoteChargeRepository = new RemoteChargeRepository(this);
 
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        chargeDataList = mobileDataRepository.selectAll();
+        chargeDataList = localChargeRepository.selectAll();
         chargeDataAdapter = new ChargeDataAdapter(chargeDataList);
         recyclerView.setAdapter(chargeDataAdapter);
 
@@ -123,34 +123,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        LocalChargeData mobileChargeData = (LocalChargeData)data.getSerializableExtra(LocalChargeData.class.getSimpleName());
+        LocalChargeData localChargeData = (LocalChargeData)data.getSerializableExtra(LocalChargeData.class.getSimpleName());
         RemoteChargeData remoteChargeData = (RemoteChargeData)data.getSerializableExtra(RemoteChargeData.class.getSimpleName());
 
-        int position = mobileChargeData.getViewPosition();
+        int position = localChargeData.getViewPosition();
 
         switch (requestCode) {
             case NEW_CHARGE_DATA_ACTIVITY:
-                long chargeId = mobileDataRepository.insert(mobileChargeData);
-                if (chargeId != -1) {
-                    mobileChargeData.setChargeId((int)chargeId);
-                    chargeDataList.add(position, mobileChargeData);
-                    chargeDataAdapter.notifyItemInserted(position);
-                };
+                if (!"D".equals(localChargeData.getRecordStatus())) {
+                    long chargeId = localChargeRepository.insert(localChargeData);
+                    if (chargeId != -1) {
+                        localChargeData.setChargeId((int)chargeId);
+                        chargeDataList.add(position, localChargeData);
+                        chargeDataAdapter.notifyItemInserted(position);
+                    };
+                }
                 break;
             case CHANGE_CHARGE_DATA_ACTIVITY:
-                if (mobileChargeData.getMileage() == -1L) {
-                    if (mobileDataRepository.delete(mobileChargeData)) {
+                if ("D".equals(localChargeData.getRecordStatus())) {
+                    if (localChargeRepository.delete(localChargeData)) {
                         if (remoteChargeData != null) {
                             remoteChargeData.setMobileChargeId(null);
                         }
                         chargeDataList.remove(position);
                         chargeDataAdapter.notifyItemRemoved(position);
                     }
+                } else if ("R".equals(localChargeData.getRecordStatus())) {
+                    chargeDataList.remove(position);
+                    chargeDataAdapter.notifyItemRemoved(position);
                 } else {
-                        if (mobileDataRepository.update(mobileChargeData)) {
-                            chargeDataList.set(position, mobileChargeData);
+                    if (localChargeRepository.update(localChargeData)) {
+                            chargeDataList.set(position, localChargeData);
                             chargeDataAdapter.notifyItemChanged(position);
-                        }
+                    }
                 }
                 break;
         }
